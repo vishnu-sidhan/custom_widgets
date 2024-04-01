@@ -7,10 +7,12 @@ final class CustomSwitch extends CustomInputWidget<RxBool, bool> {
       {super.key,
       this.falseLabel = '',
       this.trueLabel = '',
+      this.onPressed,
       this.showLabelText = true});
   final String falseLabel;
   final String trueLabel;
   final bool showLabelText;
+  final ValueChanged<bool>? onPressed;
 
   List<Widget> _rowChildren() {
     List<Widget> temp = [
@@ -21,7 +23,12 @@ final class CustomSwitch extends CustomInputWidget<RxBool, bool> {
           activeTrackColor: Colors.green[200],
           inactiveTrackColor: Colors.red[200],
           inactiveThumbColor: value ? Colors.green : Colors.red,
-          onChanged: editable ? (newValue) => value = newValue : null,
+          onChanged: editable
+              ? (newValue) {
+                  onPressed?.call(newValue);
+                  value = newValue;
+                }
+              : null,
         ),
       ),
     ];

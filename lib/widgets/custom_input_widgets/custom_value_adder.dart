@@ -1,6 +1,6 @@
+import 'package:custom_widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'custom_input_widget.dart';
 
 enum DisplayValuePosition { left, center, right }
 
@@ -15,33 +15,25 @@ final class CustomValueAdder extends CustomInputWidget<RxInt, int> {
 
   List<Widget> _rowChildren() {
     List<Widget> temp = [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Obx(() => IconButton.outlined(
-            onPressed: (value <= 0)
-                ? null
-                : () {
-                    value -= 1;
-                  },
-            icon: const Icon(Icons.remove))),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Obx(() => IconButton.outlined(
-            onPressed: value >= max
-                ? null
-                : () {
-                    value += 1;
-                  },
-            icon: const Icon(Icons.add))),
-      ),
+      ObxPadding.all(8,
+          builder: () => IconButton.outlined(
+              onPressed: (value <= 0)
+                  ? null
+                  : () {
+                      value -= 1;
+                    },
+              icon: const Icon(Icons.remove))),
+      ObxPadding.all(8,
+          builder: () => IconButton.outlined(
+              onPressed: value >= max
+                  ? null
+                  : () {
+                      value += 1;
+                    },
+              icon: const Icon(Icons.add))),
     ];
-    temp.insert(
-        displayValuePosition.index,
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Obx(() => Text("$value")),
-        ));
+    temp.insert(displayValuePosition.index,
+        ObxPadding.all(8, builder: () => Text("$value")));
     return temp;
   }
 

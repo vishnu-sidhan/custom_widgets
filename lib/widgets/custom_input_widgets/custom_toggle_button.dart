@@ -43,12 +43,7 @@ final class CustomToggleButton
                   // onChanged?.call(newVal);
                 }
               : null,
-          children: children
-              .map((e) => Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text('$e'),
-                  ))
-              .toList());
+          children: children.map((e) => Text('$e').paddingAll(5)).toList());
     });
   }
 

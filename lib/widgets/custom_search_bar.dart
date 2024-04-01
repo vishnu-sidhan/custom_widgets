@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 final class CustomSearchBar extends CustomInputWidget<RxString, String> {
-  const CustomSearchBar({super.key, String name = ''})
+  const CustomSearchBar({super.key, String name = '', this.elevation})
       : super("$name custom search bar");
+
+  final double? elevation;
 
   TextEditingController get _textController =>
       controller.textController ??= TextEditingController();
@@ -18,18 +20,16 @@ final class CustomSearchBar extends CustomInputWidget<RxString, String> {
   @override
   Widget build(BuildContext context) {
     editable = false;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
-      child: SearchBar(
-        hintText: "Search ${labelText.split("custom search bar").first}",
-        leading: const Icon(Icons.search),
-        controller: _textController,
-        onChanged: _onChange,
-        trailing: [
-          RxIconButtonOnBool(controller.editable,
-              onPressed: _onChange, onTrue: Icons.close)
-        ],
-      ),
+    return SearchBar(
+      elevation: MaterialStatePropertyAll(elevation),
+      hintText: "Search ${labelText.split("custom search bar").first}",
+      leading: const Icon(Icons.search),
+      controller: _textController,
+      onChanged: _onChange,
+      trailing: [
+        RxIconButtonOnBool(controller.editable,
+            onPressed: _onChange, onTrue: Icons.close)
+      ],
     );
   }
 }

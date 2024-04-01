@@ -66,31 +66,32 @@ final class CustomTextWidget extends CustomFormField {
   @override
   Widget build(BuildContext context) {
     textController.text = initialValue ?? '';
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: ObxValue((passwordVisible) {
-        return TextFormField(
-          obscureText: passwordVisible.value,
-          readOnly: !editable,
-          validator: (val) {
-            if (!_isRequired && val?.isNotEmpty != true) {
-              return null;
-            }
-            return validation?.call(val);
-          },
-          controller: textController,
-          // onChanged: (newVal) => value = textController.text,
-          keyboardType: inputType,
-          autovalidateMode: autovalidateMode,
-          maxLines: _isThreeLine ? 3 : 1,
-          decoration: InputDecoration(
-            suffixIcon:
-                _isObscure ? ObscureTextIcon(passwordVisible) : trailingWidget,
-            border: outLineBorder ? const OutlineInputBorder() : null,
-            label: Text(labelText),
-          ),
-        );
-      }, _isObscure.obs),
-    );
+    final passwordVisible = _isObscure.obs;
+    return ObxPadding.only(
+        top: paddingValue,
+        builder: () {
+          return TextFormField(
+            obscureText: passwordVisible.value,
+            readOnly: !editable,
+            validator: (val) {
+              if (!_isRequired && val?.isNotEmpty != true) {
+                return null;
+              }
+              return validation?.call(val);
+            },
+            controller: textController,
+            // onChanged: (newVal) => value = textController.text,
+            keyboardType: inputType,
+            autovalidateMode: autovalidateMode,
+            maxLines: _isThreeLine ? 3 : 1,
+            decoration: InputDecoration(
+              suffixIcon: _isObscure
+                  ? ObscureTextIcon(passwordVisible)
+                  : trailingWidget,
+              border: outLineBorder ? const OutlineInputBorder() : null,
+              label: Text(labelText),
+            ),
+          );
+        });
   }
 }

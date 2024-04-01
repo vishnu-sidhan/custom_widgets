@@ -1,9 +1,6 @@
+import 'package:custom_widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../../../validator/string_validator.dart';
-import 'custom_form_field.dart';
-import 'custom_text_form_field.dart';
 
 final class CustomListValuesAdderWidget extends CustomFormField {
   CustomListValuesAdderWidget(super.labelText,
@@ -31,79 +28,80 @@ final class CustomListValuesAdderWidget extends CustomFormField {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: Obx(() => _isSeperated
-          ? TextFormField(
-              readOnly: true,
-              validator: (value) => validation?.call(value),
-              controller: textController,
-              // onChanged: (newVal) => value = textController.text,
-              onTap: !editable
-                  ? null
-                  : () async {
-                      var t = (await Get.to<_ListValuesResult>(
-                          () => _ListValuesPage(labelText, listValues, value),
-                          routeName: "/select_option"));
-                      if (t != null) {
-                        value = t.selectedValue ?? "";
-                        // listValues.assignAll(t.list);
-                      }
-                    },
-              keyboardType: inputType,
-              autovalidateMode: autovalidateMode,
-              decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.arrow_drop_down),
-                border: outLineBorder ? const OutlineInputBorder() : null,
-                label: Text(labelText),
-              ),
-            )
-          : Column(
-              children: [
-                editable
-                    ? TextFormField(
-                        validator: (value) => validation?.call(listValues),
-                        controller: textController,
-                        // onChanged: (newVal) => value = newVal,
-                        keyboardType: inputType,
-                        autovalidateMode: autovalidateMode,
-                        decoration: InputDecoration(
-                          suffixIcon: TextButton.icon(
-                              onPressed: () {
-                                listValues.add(value);
-                                value = '';
-                              },
-                              icon: const Icon(Icons.add),
-                              label: const Text("Add")),
-                          border:
-                              outLineBorder ? const OutlineInputBorder() : null,
-                          label: Text(labelText),
-                        ),
-                      )
-                    : const Text(" Categories List",
-                        style: TextStyle(fontSize: 20)),
-                Wrap(
-                  children: listValues
-                      .map((element) => InkWell(
-                            onLongPress: editable
-                                ? () => Get.defaultDialog(
-                                    title: "Do you want to delete $element?",
-                                    onConfirm: () => listValues.remove(element),
-                                    textCancel: "Back")
+    return ObxPadding.only(
+        top: paddingValue,
+        builder: () => _isSeperated
+            ? TextFormField(
+                readOnly: true,
+                validator: (value) => validation?.call(value),
+                controller: textController,
+                // onChanged: (newVal) => value = textController.text,
+                onTap: !editable
+                    ? null
+                    : () async {
+                        var t = (await Get.to<_ListValuesResult>(
+                            () => _ListValuesPage(labelText, listValues, value),
+                            routeName: "/select_option"));
+                        if (t != null) {
+                          value = t.selectedValue ?? "";
+                          // listValues.assignAll(t.list);
+                        }
+                      },
+                keyboardType: inputType,
+                autovalidateMode: autovalidateMode,
+                decoration: InputDecoration(
+                  suffixIcon: const Icon(Icons.arrow_drop_down),
+                  border: outLineBorder ? const OutlineInputBorder() : null,
+                  label: Text(labelText),
+                ),
+              )
+            : Column(
+                children: [
+                  editable
+                      ? TextFormField(
+                          validator: (value) => validation?.call(listValues),
+                          controller: textController,
+                          // onChanged: (newVal) => value = newVal,
+                          keyboardType: inputType,
+                          autovalidateMode: autovalidateMode,
+                          decoration: InputDecoration(
+                            suffixIcon: TextButton.icon(
+                                onPressed: () {
+                                  listValues.add(value);
+                                  value = '';
+                                },
+                                icon: const Icon(Icons.add),
+                                label: const Text("Add")),
+                            border: outLineBorder
+                                ? const OutlineInputBorder()
                                 : null,
-                            child: Container(
-                                padding: const EdgeInsets.all(5),
-                                margin: const EdgeInsets.all(5),
-                                decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.horizontal(),
-                                    color: Colors.black12),
-                                child: Text(element)),
-                          ))
-                      .toList(),
-                )
-              ],
-            )),
-    );
+                            label: Text(labelText),
+                          ),
+                        )
+                      : const Text(" Categories List",
+                          style: TextStyle(fontSize: 20)),
+                  Wrap(
+                    children: listValues
+                        .map((element) => InkWell(
+                              onLongPress: editable
+                                  ? () => Get.defaultDialog(
+                                      title: "Do you want to delete $element?",
+                                      onConfirm: () =>
+                                          listValues.remove(element),
+                                      textCancel: "Back")
+                                  : null,
+                              child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  margin: const EdgeInsets.all(5),
+                                  decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.horizontal(),
+                                      color: Colors.black12),
+                                  child: Text(element)),
+                            ))
+                        .toList(),
+                  )
+                ],
+              ));
   }
 }
 

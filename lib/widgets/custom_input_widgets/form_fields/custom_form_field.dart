@@ -1,3 +1,4 @@
+import 'package:custom_widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,4 +41,7 @@ abstract base class CustomFormField
   void clearValue() {
     value = '';
   }
+
+  @protected
+  final double paddingValue = 20;
 }

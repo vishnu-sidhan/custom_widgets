@@ -67,15 +67,12 @@ final class CustomCardWidget extends CustomFormField {
     }
     Widget? widget;
     if (img.isNotEmpty) {
-      widget = Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Image.asset(
-          'assets/images/cardtype/$img',
-          width: 20,
-          height: 20,
-          package: 'custom_widgets',
-        ),
-      );
+      widget = Image.asset(
+        'assets/images/cardtype/$img',
+        width: 20,
+        height: 20,
+        package: 'custom_widgets',
+      ).paddingAll(12);
     } else {
       widget = icon;
     }
@@ -99,37 +96,36 @@ final class CustomCardWidget extends CustomFormField {
     final passwordVisible = isObscure.obs;
     final cardTypeLogo = _getCardIcon.obs;
     textController.addListener(() => cardTypeLogo.value = _getCardIcon);
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: Obx(() {
-        return TextFormField(
-          obscureText: passwordVisible.value,
-          readOnly: !editable,
-          validator: (val) => validation?.call(val),
-          controller: textController,
-          // onChanged: (newVal) => cardTypeLogo.value = _getCardIcon,
-          keyboardType: inputType,
-          autovalidateMode: autovalidateMode,
-          inputFormatters: _isCard
-              ? [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(16),
-                  _CardNumberInputFormatter(),
-                ]
-              : [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(4),
-                  _CardMonthInputFormatter(),
-                ],
-          decoration: InputDecoration(
-            prefixIcon: _isCard ? cardTypeLogo.value : null,
-            suffixIcon: isObscure ? ObscureTextIcon(passwordVisible) : null,
-            border: outLineBorder ? const OutlineInputBorder() : null,
-            label: Text(labelText),
-          ),
-        );
-      }),
-    );
+    return ObxPadding.only(
+        top: paddingValue,
+        builder: () {
+          return TextFormField(
+            obscureText: passwordVisible.value,
+            readOnly: !editable,
+            validator: (val) => validation?.call(val),
+            controller: textController,
+            // onChanged: (newVal) => cardTypeLogo.value = _getCardIcon,
+            keyboardType: inputType,
+            autovalidateMode: autovalidateMode,
+            inputFormatters: _isCard
+                ? [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(16),
+                    _CardNumberInputFormatter(),
+                  ]
+                : [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(4),
+                    _CardMonthInputFormatter(),
+                  ],
+            decoration: InputDecoration(
+              prefixIcon: _isCard ? cardTypeLogo.value : null,
+              suffixIcon: isObscure ? ObscureTextIcon(passwordVisible) : null,
+              border: outLineBorder ? const OutlineInputBorder() : null,
+              label: Text(labelText),
+            ),
+          );
+        });
   }
 }
 

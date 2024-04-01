@@ -47,16 +47,13 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const CircularProgressIndicator.adaptive(),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Material(
-                  color: Colors.transparent,
-                  child: RxText(
-                    _loadingString,
-                    style: const TextStyle(color: Colors.grey, fontSize: 24),
-                  ),
+              Material(
+                color: Colors.transparent,
+                child: RxText(
+                  _loadingString,
+                  style: const TextStyle(color: Colors.grey, fontSize: 24),
                 ),
-              )
+              ).paddingAll(15),
             ],
           );
         });

@@ -1,13 +1,8 @@
+import 'package:custom_widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../utils/app.utils.dart';
-import '../../../validator/string_validator.dart';
-import 'custom_form_field.dart';
-
-import '../../../../../constants/country.dart';
-import '../../../../../models/mobile_number.dart';
-import '../../../../../utils/location.utils.dart';
 
 final class CustomMobieNumberWidget extends CustomFormField {
   CustomMobieNumberWidget(
@@ -117,43 +112,42 @@ final class CustomMobieNumberWidget extends CustomFormField {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: Obx(() => TextFormField(
-            controller: textController,
-            readOnly: !editable,
-            autovalidateMode: autovalidateMode,
-            validator: _internalValidate,
-            onTap: _onTapField,
-            onChanged: _onChangedValue,
-            inputFormatters: [
-              _CountryCodeFormatter(_mobile.countryCode!),
-              LengthLimitingTextInputFormatter(
-                  _mobile.countryCode!.length + 14),
-            ],
-            keyboardType: inputType,
-            decoration: InputDecoration(
-              prefixIcon: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: countryFlagImageWidget(_country.value.isoCode)),
-              isDense: true,
-              prefixIconConstraints:
-                  const BoxConstraints.tightForFinite(width: 45, height: 30),
-              prefix: PopupMenuButton<String>(
-                  onSelected: (val) {
-                    _country.value = LocationUtils.countryFromPhoneCode(val);
-                    textController.clear();
-                  },
-                  enabled: editable,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  splashRadius: 5,
-                  tooltip: "Select Country Code",
-                  itemBuilder: (context) => _popupValuesList),
-              border: outLineBorder ? const OutlineInputBorder() : null,
-              labelText: labelText,
-            ),
-          )),
-    );
+    return ObxPadding.only(
+        top: paddingValue,
+        builder: () => TextFormField(
+              controller: textController,
+              readOnly: !editable,
+              autovalidateMode: autovalidateMode,
+              validator: _internalValidate,
+              onTap: _onTapField,
+              onChanged: _onChangedValue,
+              inputFormatters: [
+                _CountryCodeFormatter(_mobile.countryCode!),
+                LengthLimitingTextInputFormatter(
+                    _mobile.countryCode!.length + 14),
+              ],
+              keyboardType: inputType,
+              decoration: InputDecoration(
+                prefixIcon: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: countryFlagImageWidget(_country.value.isoCode)),
+                isDense: true,
+                prefixIconConstraints:
+                    const BoxConstraints.tightForFinite(width: 45, height: 30),
+                prefix: PopupMenuButton<String>(
+                    onSelected: (val) {
+                      _country.value = LocationUtils.countryFromPhoneCode(val);
+                      textController.clear();
+                    },
+                    enabled: editable,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    splashRadius: 5,
+                    tooltip: "Select Country Code",
+                    itemBuilder: (context) => _popupValuesList),
+                border: outLineBorder ? const OutlineInputBorder() : null,
+                labelText: labelText,
+              ),
+            ));
   }
 }
 

@@ -74,33 +74,34 @@ final class CustomNumberWidget extends CustomFormField {
   @override
   Widget build(BuildContext context) {
     textController.text = _isRateValue ? "0" : value;
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: ObxValue((isObscure) {
-        return TextFormField(
-          readOnly: !editable,
-          obscureText: isObscure.value,
-          validator: (val) =>
-              _isPin ? validation!.call(val, maxLength) : validation?.call(val),
-          autovalidateMode: autovalidateMode,
-          controller: textController,
-          onChanged: (val) {
-            if (value == "" && _isRateValue) {
-              textController.text = "0";
-            }
-            // value = textController.text;
-          },
-          maxLength: maxLength,
-          inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
-          keyboardType: inputType,
-          decoration: InputDecoration(
-            helperText: _helperText,
-            border: outLineBorder ? const OutlineInputBorder() : null,
-            suffixIcon: _isPin ? ObscureTextIcon(isObscure) : trailingWidget,
-            label: Text(labelText),
-          ),
-        );
-      }, _isPin.obs),
-    );
+    final isObscure = _isPin.obs;
+    return ObxPadding.only(
+        top: paddingValue,
+        builder: () {
+          return TextFormField(
+            readOnly: !editable,
+            obscureText: isObscure.value,
+            validator: (val) => _isPin
+                ? validation!.call(val, maxLength)
+                : validation?.call(val),
+            autovalidateMode: autovalidateMode,
+            controller: textController,
+            onChanged: (val) {
+              if (value == "" && _isRateValue) {
+                textController.text = "0";
+              }
+              // value = textController.text;
+            },
+            maxLength: maxLength,
+            inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
+            keyboardType: inputType,
+            decoration: InputDecoration(
+              helperText: _helperText,
+              border: outLineBorder ? const OutlineInputBorder() : null,
+              suffixIcon: _isPin ? ObscureTextIcon(isObscure) : trailingWidget,
+              label: Text(labelText),
+            ),
+          );
+        });
   }
 }
